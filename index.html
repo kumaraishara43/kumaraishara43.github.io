@@ -1,132 +1,138 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 	
-        <style>
-            body {
-                background-color: #06ff8b;
-                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="0" y="20" style="font-size: 20px; font-family: monospace;">01010101010101010101</text></svg>');
-                background-size: 100px 100px;
-                background-repeat: repeat;
-                background-position: 0 0;
-                animation: float 0.1s linear infinite;
-                color: #00FF00;
-                font-family: 'Courier New', monospace;
-            }
-            @keyframes float {
-                0% {
-                    background-position: 0 0;
-                }
-                100% {
-                    background-position: 100px 100px;
-                }
-            }
-            h1 {
-                font-size: 3em;
-                text-align: center;
-                text-transform: uppercase;
-                letter-spacing: 0.2em;
-                margin-top: 50px;
-            }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<title>IK Personal Blog</title>
+	<style>
+
+
+
+
+
+
+		/* Styling for the loading animation overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+background-color: #191f26;
+}
+
+.loading-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-animation img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+
+body {
+		  background-color: #020000;
+		}
+
+body {
+			background-color: #06ff8b;
+			background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="0" y="20" style="font-size: 20px; font-family: monospace;">01010101010101010101</text></svg>');
+			background-size: 100px 100px;
+			background-repeat: repeat;
+			background-position: 0 0;
+			animation: float 0.1s linear infinite;
+		}
+
+		@keyframes float {
+			0% {
+				background-position: 0 0;
+			}
+			100% {
+				background-position: 100px 100px;
+			}
+		}
+		iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 95%;
+    display: block;
+    margin: 0 auto;
+			height: 100%;
+			border: none;
+		}
+
+		#ip-details {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      width: 300px;
+      padding: 20px;
+      margin: 0 auto;
+      margin-top: 50px;
+      text-align: center;
+      font-size: 18px;
+    }
     
-            p {
-                font-size: 1.2em;
-                line-height: 1.5em;
-                margin: 20px 0;
-            }
+    #ip-details p {
+      margin: 0;
+      padding: 0;
+      margin-bottom: 10px;
+    }
     
-            a {
-                color: #00FF00;
-                text-decoration: none;
-            }
-    
-            a:hover {
-                text-decoration: underline;
-            }
-    
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 50px;
-                box-shadow: 0 0 20px rgba(0,0,0,0.5);
-                border-radius: 10px;
-                background-color: #212121;
-                position: relative;
-            }
-    
-            .overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: #000000;
-                z-index: 9999;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-    
-            .loading-icon {
-                width: 50px;
-                height: 50px;
-                background-image: url('https://hackernoon.imgix.net/images/0*apCoiP4a2SAjnYKV.gif');
-                background-size: cover;
-            }
-    
-            .code {
-                background-color: #111111;
-                color: #00FF00;
-                padding: 20px;
-                margin: 20px 0;
-                border-radius: 5px;
-                white-space: pre-wrap;
-                font-size: 1.1em;
-                line-height: 1.3em;
-                font-family: 'Lucida Console', monospace;
-            }
-    
-            .code:before {
-                content: '$ ';
-                color: #00FF00;
-            }
-    
-            .code:after {
-                content: '';
-                display: block;
-                clear: both;
-            }
-    
-            .code pre {
-                margin: 0;
-                padding: 0;
-                border: none;
-                background-color: transparent;
-                color: #00FF00;
-                font-family: 'Lucida Console', monospace;
-                font-size: 1.1em;
-                line-height: 1.3em;
-                white-space: pre-wrap;
-            }
-    
-            .quote {
-                background-color: #333333;
-                color: #00FF00;
-                padding: 20px;
-                margin: 20px 0;
-                border-radius: 5px;
-                font
-    
+    #ip-details .label {
+      font-weight: bold;
+    }
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
 	</style>
 </head>
 <body>
-    
-	<div class="container">
-		<h1>IKP's Personal Area</h1>
-		<p>
-            keep in mind I AM WATCHING ON YOU !  
-           </p>
-        
+	<script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+	<div class="commonninja_component pid-ae808cbf-0814-4cf2-9e2b-e33407053910"></div>
+	
+	<!-- Loading animation overlay -->
+	<div class="loading-overlay">
+		<div class="loading-animation">
+  <img src="load.gif" alt="Loading...">
+
+
+</div>
+
+	</div>
+
+	<!-- Your webpage content -->
 
 
 
@@ -135,17 +141,29 @@
 
 
 
-		<div class="code">
-			<pre>
-			<code>
-Hello mother fkrs,
-Now you are enterd to my official webste !
+<div>
+<iframe src="index2.html" scrolling="yes" ></iframe>
+</div>
 
-This Page will help you for boost your work
+	<!-- JavaScript code to hide the overlay when the webpage is loaded -->
+	<script>
+		window.addEventListener('load', function() {
+			document.querySelector('.loading-overlay').style.display = 'none';
+		});
+// Retrieve IP details using ipinfo.io API
+fetch('https://ipinfo.io/json')
+		  .then(response => response.json())
+		  .then(data => {
+			// Update HTML with IP details
+			document.getElementById('ip-address').textContent = data.ip;
+			document.getElementById('hostname').textContent = data.hostname;
+			document.getElementById('city').textContent = data.city;
+			document.getElementById('region').textContent = data.region;
+			document.getElementById('country').textContent = data.country;
+			document.getElementById('postal-code').textContent = data.postal;
+		  });
 
-GOOD LUCK !           </code>
-			</pre>
-		</div>
-		<div class="quote">
-			<iframe src="https://player.vimeo.com/video/802661749?h=da4fdd9212&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="max" height="max" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Percentation.mp4"></iframe>
-        </div>
+	</script>
+	
+</body>
+</html>
