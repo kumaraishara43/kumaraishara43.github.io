@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+    canvas {
+      display: block;
+    }
+    #fps {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="fps">FPS: </div>
+
+  <script>
+    // Get the canvas element and its 2D rendering context
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set the canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Initialize variables
+    let frameCount = 0;
+    let startTime;
+    let fps;
+
+    // Function to update the frame count and calculate FPS
+    function updateFPS() {
+      frameCount++;
+
+      const currentTime = performance.now();
+      const elapsedTime = (currentTime - startTime) / 1000;
+
+      if (elapsedTime > 1) {
+        fps = Math.round(frameCount / elapsedTime);
+        frameCount = 0;
+        startTime = currentTime;
+      }
+    }
+
+    // Function to draw the FPS on the canvas
+    function drawFPS() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = '16px Arial, sans-serif';
+      ctx.fillText(`FPS: ${fps}`, 10, 25);
+    }
+
+    // Function to update and draw FPS every frame
+    function animate() {
+      updateFPS();
+      drawFPS();
+      requestAnimationFrame(animate);
+    }
+
+    // Start the animation loop
+    startTime = performance.now();
+    animate();
+  </script>
+</body>
+</html>
