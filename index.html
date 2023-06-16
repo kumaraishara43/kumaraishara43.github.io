@@ -1,43 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Browser Detection Popup</title>
-    <style>
-        .popup {
-            width: 200px;
-            background-color: #f1f1f1;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            text-align: center;
-            margin: 0 auto;
-        }
-    </style>
+    <title>Browser Redirect</title>
     <script>
-        function detectBrowser() {
+        function redirectBrowser() {
             var userAgent = navigator.userAgent;
-            var version = '';
 
             if (/chrome/i.test(userAgent)) {
-                version = userAgent.match(/Chrome\/([\d.]+)/)[1];
+                var version = userAgent.match(/Chrome\/([\d.]+)/)[1];
+                if (version === '102.0.5005.167') {
+                    window.location.href = 'https://pvtspace.github.io/Mainspace/';
+                } else {
+                    window.location.href = 'https://pvtspace.github.io/Mainspace/error.html';
+                }
+            } else {
+                window.location.href = 'https://pvtspace.github.io/Mainspace/error.html';
             }
-
-            return version;
         }
 
-        window.onload = function() {
-            var browserVersion = detectBrowser();
-            var popup = document.getElementById('popup');
-
-            if (browserVersion === '102.0.5005.167') {
-                popup.textContent = 'Accepted';
-            } else {
-                popup.textContent = 'Error';
-            }
-        };
+        window.onload = redirectBrowser;
     </script>
 </head>
 <body>
-    <div id="popup" class="popup"></div>
+    <h1>Browser Redirect</h1>
+    <p>Redirecting...</p>
 </body>
 </html>
