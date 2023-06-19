@@ -26,3 +26,368 @@
     <p>Redirecting...</p>
 </body>
 </html>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Video Home</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+    
+
+    .container {
+
+      max-width: 960px;
+
+      margin: 0 auto;
+
+      padding: 20px;
+
+    }
+
+    
+
+    .video-card {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      margin-bottom: 20px;
+
+      padding: 10px;
+
+      border: 1px solid #ccc;
+
+      border-radius: 5px;
+
+    }
+
+    
+
+    .video-thumbnail {
+
+      flex: 0 0 180px;
+
+      margin-right: 10px;
+
+    }
+
+    
+
+    .video-thumbnail img {
+
+      width: 100%;
+
+      height: auto;
+
+    }
+
+    
+
+    .video-info {
+
+      flex: 1;
+
+    }
+
+    
+
+    .video-title {
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      margin-bottom: 5px;
+
+    }
+
+    
+
+    .video-description {
+
+      font-size: 14px;
+
+      color: #666;
+
+      margin-bottom: 5px;
+
+    }
+
+    
+
+    .video-popup {
+
+      display: none;
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: rgba(0, 0, 0, 0.8);
+
+      z-index: 9999;
+
+    }
+
+    
+
+    .video-popup-content {
+
+      position: absolute;
+
+      top: 50%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 640px;
+
+      height: 360px;
+
+      background: #fff;
+
+      border-radius: 5px;
+
+      padding: 20px;
+
+    }
+
+    
+
+    .search-bar {
+
+      margin-bottom: 20px;
+
+      text-align: center;
+
+    }
+
+    
+
+    .search-bar input[type="text"] {
+
+      width: 300px;
+
+      padding: 10px;
+
+      font-size: 16px;
+
+    }
+
+    
+
+    .search-bar button {
+
+      padding: 10px 20px;
+
+      font-size: 16px;
+
+    }
+
+    
+
+    /* Custom scrollbar */
+
+    .video-container::-webkit-scrollbar {
+
+      width: 8px;
+
+    }
+
+    
+
+    .video-container::-webkit-scrollbar-thumb {
+
+      background-color: #999;
+
+      border-radius: 4px;
+
+    }
+
+    
+
+    .video-container::-webkit-scrollbar-thumb:hover {
+
+      background-color: #555;
+
+    }
+
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+
+    $(document).ready(function() {
+
+      var videoContainer = $('.video-container');
+
+      var searchInput = $('#search-input');
+
+      
+
+      // Load videos when scrolling reaches the bottom
+
+      $(window).scroll(function() {
+
+        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+
+          loadVideos();
+
+        }
+
+      });
+
+      
+
+      // Load initial videos
+
+      loadVideos();
+
+      
+
+      // Search videos when the search button is clicked
+
+      $('#search-button').click(function() {
+
+        var searchTerm = searchInput.val().toLowerCase();
+
+        searchVideos(searchTerm);
+
+      });
+
+      
+
+      // Search videos when the Enter key is pressed
+
+      searchInput.keypress(function(event) {
+
+        if (event.which === 13) {
+
+          event.preventDefault();
+
+          var searchTerm = searchInput.val().toLowerCase();
+
+          searchVideos(searchTerm);
+
+        }
+
+      });
+
+      
+
+      // Open video popup
+
+      videoContainer.on('click', '.video-thumbnail', function() {
+
+        var videoUrl = $(this).data('url');
+
+        $('.video-popup iframe').attr('src', videoUrl);
+
+        $('.video-popup').fadeIn();
+
+      });
+
+      
+
+      // Close video popup
+
+      $('.video-popup').click(function() {
+
+        $(this).fadeOut();
+
+        $('.video-popup iframe').attr('src', '');
+
+      });
+
+      
+
+      function loadVideos() {
+
+        $.ajax({
+
+          url: 'video.html',
+
+          dataType: 'html',
+
+          success: function(data) {
+
+            videoContainer.append(data);
+
+          }
+
+        });
+
+      }
+
+      
+
+      function searchVideos(searchTerm) {
+
+        $('.video-card').hide();
+
+        $('.video-title:contains(' + searchTerm + ')').closest('.video-card').show();
+
+      }
+
+    });
+
+  </script>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="search-bar">
+
+      <input type="text" id="search-input" placeholder="Search videos...">
+
+      <button id="search-button">Search</button>
+
+    </div>
+
+    <div class="video-container">
+
+      <!-- Videos will be dynamically loaded here -->
+
+    </div>
+
+    <div class="video-popup">
+
+      <div class="video-popup-content">
+
+        <iframe width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
