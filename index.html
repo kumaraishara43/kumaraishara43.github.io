@@ -12,6 +12,7 @@
             overflow: hidden;
             background-color: #333;
             color: #fff;
+            font-family: Arial, sans-serif;
         }
         .embed-container {
             position: absolute;
@@ -32,18 +33,33 @@
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 15px;
+            padding: 20px;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
             display: flex;
             align-items: center;
+            transition: background-color 0.3s, opacity 0.5s;
+            opacity: 0;
         }
         .download-button:hover {
             background-color: #0056b3;
         }
         .download-button img {
             margin-right: 5px;
+        }
+        .file-info {
+            display: none;
+            background-color: #444;
+            padding: 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50px;
+width: 200%;
+            right: 5px;
+        }
+        .download-button:hover .file-info {
+            display: block;
         }
         .popup, .error-message {
             position: fixed;
@@ -98,15 +114,31 @@
             from { opacity: 1; }
             to { opacity: 0; }
         }
+        @keyframes buttonFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            .download-button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .file-info {
+                top: 40px;
+                right: 5px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="embed-container">
-        <iframe id="driveIframe" src="" allow="autoplay"></iframe>
+        <iframe id="driveIframe" src="" allow="autoplay" onload="document.getElementById('downloadButton').style.opacity = '1'"></iframe>
     </div>
     <a id="downloadButton" href="" class="download-button" target="_blank">
         <img src="https://static.vecteezy.com/system/resources/previews/015/337/691/non_2x/download-icon-download-sign-blue-color-free-png.png" alt="Download" width="16" height="16">
         Download
+        <div class="file-info" id="fileInfo"></div>
     </a>
     
     <div id="popup" class="popup">
@@ -151,24 +183,25 @@
         function updateLinks() {
             const driveId = document.getElementById('driveIdInput').value;
             if (driveId) {
-                const fileUrl = `https://www.googleapis.com/drive/v3/files/${driveId}?key=${API_KEY}`;
-                
+                const fileUrl = `https://www.googleapis.com/drive/v3/files/${driveId}?key=${API_KEY}&fields=name,mimeType,size`;
+
                 fetch(fileUrl).then(response => response.json()).then(data => {
                     if (data.error) {
                         showError('The file could not be accessed. Please check the file ID and permissions.');
                     } else {
                         const previewLink = `https://drive.google.com/file/d/${driveId}/preview`;
                         const downloadLink = `https://drive.google.com/uc?export=download&id=${driveId}`;
-                        
+
                         document.getElementById('driveIframe').src = previewLink;
                         document.getElementById('downloadButton').href = downloadLink;
+                        document.getElementById('fileInfo').innerHTML = `<strong>Name:</strong> ${data.name}<br><strong>Type:</strong> ${data.mimeType}<br><strong>Size:</strong> ${(data.size / (1024 * 1024)).toFixed(2)} MB`;
                         hidePopup();
                     }
                 }).catch(() => {
                     showError('An unexpected error occurred. Please try again later.');
                 });
             } else {
-                alert('Please enter a valid Google Drive file ID.');
+                alert('Please enter a file ID.');
             }
         }
 
