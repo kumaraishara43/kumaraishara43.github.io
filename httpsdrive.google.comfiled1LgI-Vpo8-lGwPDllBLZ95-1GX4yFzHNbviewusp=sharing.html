@@ -10,13 +10,16 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
         }
         .embed-container {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 40px);
         }
         iframe {
             width: 100%;
@@ -43,6 +46,14 @@
         .download-button img {
             margin-right: 5px;
         }
+        .fallback-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +64,9 @@
         <img src="https://image.flaticon.com/icons/png/512/32/32170.png" alt="Download" width="16" height="16">
         Download
     </a>
+    <div id="fallback-message" class="fallback-message">
+        You need access to view this document. Please <a id="fallback-link" href="#" target="_blank">click here</a> to request access.
+    </div>
     <script>
         function getDriveLinkFromURL(url) {
             const match = url.match(/httpsdrive\.google\.comfiled(.+)viewusp=sharing/);
@@ -75,10 +89,20 @@
             const driveLink = getDriveLinkFromURL(pageURL);
             const iframe = document.getElementById('drive-iframe');
             const downloadButton = document.getElementById('download-button');
+            const fallbackMessage = document.getElementById('fallback-message');
+            const fallbackLink = document.getElementById('fallback-link');
 
             if (driveLink) {
                 iframe.src = `${driveLink}&embedded=true`;
                 downloadButton.href = getDownloadLinkFromDriveLink(driveLink);
+                fallbackLink.href = driveLink;
+                iframe.addEventListener('load', () => {
+                    const errorContent = iframe.contentDocument.querySelector('.uc-error-view');
+                    if (errorContent) {
+                        iframe.style.display = 'none';
+                        fallbackMessage.style.display = 'block';
+                    }
+                });
             } else {
                 iframe.src = 'about:blank';
                 downloadButton.href = '#';
