@@ -49,30 +49,42 @@
     <div class="embed-container">
         <iframe id="drive-iframe" src=""></iframe>
     </div>
-    <a id="download-link" class="download-button" href="" target="_blank">
+    <a id="download-button" class="download-button">
         <img src="https://image.flaticon.com/icons/png/512/32/32170.png" alt="Download" width="16" height="16">
         Download
     </a>
-
     <script>
-        function getDriveFileId() {
-            const url = window.location.href;
-            const fileIdMatch = url.match(/\/d\/([^\/]+)/);
-            return fileIdMatch ? fileIdMatch[1] : null;
-        }
-
-        function updateLinks() {
-            const fileId = getDriveFileId();
-            if (fileId) {
-                const iframe = document.getElementById('drive-iframe');
-                const downloadLink = document.getElementById('download-link');
-                
-                iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
-                downloadLink.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        function getDriveLinkFromURL(url) {
+            const match = url.match(/httpsdrive\.google\.comfiled(.+)viewusp=sharing/);
+            if (match) {
+                return `https://drive.google.com/file/d/${match[1]}/view?usp=sharing`;
             }
+            return null;
         }
 
-        document.addEventListener('DOMContentLoaded', updateLinks);
+        function getDownloadLinkFromDriveLink(driveLink) {
+            const match = driveLink.match(/file\/d\/(.+?)\/view/);
+            if (match) {
+                return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+            }
+            return null;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const pageURL = window.location.href;
+            const driveLink = getDriveLinkFromURL(pageURL);
+            const iframe = document.getElementById('drive-iframe');
+            const downloadButton = document.getElementById('download-button');
+
+            if (driveLink) {
+                iframe.src = `${driveLink}&embedded=true`;
+                downloadButton.href = getDownloadLinkFromDriveLink(driveLink);
+            } else {
+                iframe.src = 'about:blank';
+                downloadButton.href = '#';
+                downloadButton.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
