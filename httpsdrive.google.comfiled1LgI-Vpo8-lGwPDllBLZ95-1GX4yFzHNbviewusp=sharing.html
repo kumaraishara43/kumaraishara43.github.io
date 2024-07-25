@@ -49,28 +49,30 @@
     <div class="embed-container">
         <iframe id="drive-iframe" src=""></iframe>
     </div>
-    <a id="download-button" class="download-button">
+    <a id="download-link" class="download-button" href="" target="_blank">
         <img src="https://image.flaticon.com/icons/png/512/32/32170.png" alt="Download" width="16" height="16">
         Download
     </a>
 
     <script>
-        // Extract Google Drive ID from the URL
-        const url = window.location.href;
-        const regex = /d-([^\/]+)\.html/;
-        const matches = url.match(regex);
-
-        if (matches && matches[1]) {
-            const driveId = matches[1];
-            const iframeSrc = `https://drive.google.com/file/d/${driveId}/preview?usp=sharing`;
-            const downloadLink = `https://drive.google.com/uc?export=download&id=${driveId}`;
-
-            // Set the iframe and download button links
-            document.getElementById('drive-iframe').src = iframeSrc;
-            document.getElementById('download-button').href = downloadLink;
-        } else {
-            console.error('Google Drive ID not found in the URL');
+        function getDriveFileId() {
+            const url = window.location.href;
+            const fileIdMatch = url.match(/\/d\/([^\/]+)/);
+            return fileIdMatch ? fileIdMatch[1] : null;
         }
+
+        function updateLinks() {
+            const fileId = getDriveFileId();
+            if (fileId) {
+                const iframe = document.getElementById('drive-iframe');
+                const downloadLink = document.getElementById('download-link');
+                
+                iframe.src = `https://drive.google.com/file/d/${fileId}/preview`;
+                downloadLink.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateLinks);
     </script>
 </body>
 </html>
