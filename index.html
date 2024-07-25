@@ -27,12 +27,12 @@
         }
         .download-button {
             position: absolute;
-            top: 10px;
+            top: 11px;
             right: 10px;
             background-color: #007bff;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 15px;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
@@ -110,13 +110,13 @@
     </a>
     
     <div id="popup" class="popup">
-        Enter your Drive File ID here: 
-        <input type="text" id="driveIdInput" placeholder="Paste file ID here">
-        <button onclick="updateLinks()">Update</button>
+        Enter your File ID here: 
+        <input type="text" id="driveIdInput" placeholder="Paste your file ID here">
+        <button onclick="updateLinks()">View</button>
     </div>
 
     <div id="errorPopup" class="error-message">
-        <p id="errorDescription">There was an error loading the file. Please check the file ID and permissions.</p>
+        <p id="errorDescription">File couldn't be accessed. Please contact the support : kumaraishara43@gmail.com</p>
         <button onclick="retry()">Retry</button>
     </div>
 
