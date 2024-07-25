@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Google Drive File with Download Button</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .embed-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .download-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+        .download-button img {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="embed-container">
+        <iframe id="drive-iframe" src=""></iframe>
+    </div>
+    <a id="download-button" class="download-button">
+        <img src="https://image.flaticon.com/icons/png/512/32/32170.png" alt="Download" width="16" height="16">
+        Download
+    </a>
+
+    <script>
+        // Extract Google Drive ID from the URL
+        const url = window.location.href;
+        const regex = /d-([^\/]+)\.html/;
+        const matches = url.match(regex);
+
+        if (matches && matches[1]) {
+            const driveId = matches[1];
+            const iframeSrc = `https://drive.google.com/file/d/${driveId}/preview?usp=sharing`;
+            const downloadLink = `https://drive.google.com/uc?export=download&id=${driveId}`;
+
+            // Set the iframe and download button links
+            document.getElementById('drive-iframe').src = iframeSrc;
+            document.getElementById('download-button').href = downloadLink;
+        } else {
+            console.error('Google Drive ID not found in the URL');
+        }
+    </script>
+</body>
+</html>
