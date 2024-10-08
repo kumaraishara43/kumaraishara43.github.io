@@ -3,214 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embedded Google Drive File with Download Button</title>
+    <title>Mobile Full Screen Embed</title>
     <style>
-        body, html {
+        /* Ensures the iframe takes up the entire screen */
+        html, body {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #333;
-            color: #fff;
-            font-family: Arial, sans-serif;
         }
-        .embed-container {
+
+        iframe {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
             border: none;
-        }
-        .download-button {
-            position: absolute;
-            top: 11px;
-            right: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s, opacity 0.5s;
-            opacity: 0;
-        }
-        .download-button:hover {
-            background-color: #0056b3;
-        }
-        .download-button img {
-            margin-right: 5px;
-        }
-        .file-info {
-            display: none;
-            background-color: #444;
-            padding: 10px;
-            border-radius: 5px;
-            position: absolute;
-            top: 50px;
-width: 200%;
-            right: 5px;
-        }
-        .download-button:hover .file-info {
-            display: block;
-        }
-        .popup, .error-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            text-align: center;
-            display: none;
-        }
-        .popup {
-            background-color: #222;
-        }
-        .error-message {
-            background-color: #d9534f;
-            color: #fff;
-        }
-        .popup.show, .error-message.show {
-            display: block;
-        }
-        .popup input, .popup button, .error-message button {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-        }
-        .popup input {
-            width: 80%;
-        }
-        .popup button, .error-message button {
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-        }
-        .popup button:hover, .error-message button:hover {
-            background-color: #0056b3;
-        }
-        .fade {
-            animation: fadeIn 0.5s forwards;
-        }
-        .fade-out {
-            animation: fadeOut 0.5s forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        @keyframes buttonFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @media (max-width: 600px) {
-            .download-button {
-                padding: 10px;
-                font-size: 14px;
-            }
-            .file-info {
-                top: 40px;
-                right: 5px;
-                font-size: 12px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="embed-container">
-        <iframe id="driveIframe" src="" allow="autoplay" onload="document.getElementById('downloadButton').style.opacity = '1'"></iframe>
-    </div>
-    <a id="downloadButton" href="" class="download-button" target="_blank">
-        <img src="https://static.vecteezy.com/system/resources/previews/015/337/691/non_2x/download-icon-download-sign-blue-color-free-png.png" alt="Download" width="16" height="16">
-        Download
-        <div class="file-info" id="fileInfo"></div>
-    </a>
-    
-    <div id="popup" class="popup">
-        Enter your File ID here: 
-        <input type="text" id="driveIdInput" placeholder="Paste your file ID here">
-        <button onclick="updateLinks()">View</button>
-    </div>
-
-    <div id="errorPopup" class="error-message">
-        <p id="errorDescription">File couldn't be accessed. Please contact the support : kumaraishara43@gmail.com</p>
-        <button onclick="retry()">Retry</button>
-    </div>
-
-    <script>
-        const API_KEY = 'AIzaSyCygkJpIwwnd_HfmZPkXkUCXjUuW2CBQ3A'; // Replace with your API key
-
-        function showPopup() {
-            const popup = document.getElementById('popup');
-            popup.classList.add('show');
-            popup.classList.add('fade');
-        }
-
-        function hidePopup() {
-            const popup = document.getElementById('popup');
-            popup.classList.add('fade-out');
-            setTimeout(() => popup.classList.remove('show', 'fade', 'fade-out'), 500);
-        }
-
-        function showError(message) {
-            const errorPopup = document.getElementById('errorPopup');
-            document.getElementById('errorDescription').innerText = message;
-            errorPopup.classList.add('show');
-            errorPopup.classList.add('fade');
-        }
-
-        function hideError() {
-            const errorPopup = document.getElementById('errorPopup');
-            errorPopup.classList.add('fade-out');
-            setTimeout(() => errorPopup.classList.remove('show', 'fade', 'fade-out'), 500);
-        }
-
-        function updateLinks() {
-            const driveId = document.getElementById('driveIdInput').value;
-            if (driveId) {
-                const fileUrl = `https://www.googleapis.com/drive/v3/files/${driveId}?key=${API_KEY}&fields=name,mimeType,size`;
-
-                fetch(fileUrl).then(response => response.json()).then(data => {
-                    if (data.error) {
-                        showError('The file could not be accessed. Please check the file ID and permissions.');
-                    } else {
-                        const previewLink = `https://drive.google.com/file/d/${driveId}/preview`;
-                        const downloadLink = `https://drive.google.com/uc?export=download&id=${driveId}`;
-
-                        document.getElementById('driveIframe').src = previewLink;
-                        document.getElementById('downloadButton').href = downloadLink;
-                        document.getElementById('fileInfo').innerHTML = `<strong>Name:</strong> ${data.name}<br><strong>Type:</strong> ${data.mimeType}<br><strong>Size:</strong> ${(data.size / (1024 * 1024)).toFixed(2)} MB`;
-                        hidePopup();
-                    }
-                }).catch(() => {
-                    showError('An unexpected error occurred. Please try again later.');
-                });
-            } else {
-                alert('Please enter a file ID.');
-            }
-        }
-
-        function retry() {
-            hideError();
-            showPopup();
-        }
-
-        window.onload = showPopup;
-    </script>
+    <iframe src="https://tawk.to/chat/67058a8c02d78d1a30ee5076/1i9mqae1a" allowfullscreen></iframe>
 </body>
 </html>
